@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Тестовое задание</title>
+    <meta charset="utf-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+</head>
+<body>
+    <!--
+        Необходимо написать автоматический поиск по книгам с использованием приведенной ниже разметки.
+        Поиск должен начинаться, если в поле поиска введено более трех символов.
+        Окончание ввода текста нужно проверять задержкой в три секунды и только потом отправлять запрос на поиск.
+        Для поиска нужно использовать URL https://www.googleapis.com/books/v1/volumes?q=search+terms, где search+terms - введенный пользователем текст
+        Более подробная документация по API https://developers.google.com/books/docs/v1/using?#WorkingVolumes
+    -->
+
+    <!--
+        Используйте эту разметку в вашем решении
+    -->
+    <div class="book-search">
+        <label>
+            Search
+            <input type="search" class="book-search-input">
+        </label>
+        <div class="book-search-result"></div>
+    </div>
+    <script>
+        const bookSearchInput = document.getElementsByClassName("book-search-input")[0];
+        const bookSearchResult = document.getElementsByClassName("book-search-result")[0];
+        let serverResponse = "Start to search for gain a result";
+        bookSearchResult.innerText = serverResponse;
+
+        const inputCheck = function(e){
+            if (e.target.value && e.target.value.length>=3){
+                axios
+                .get(
+                    'https://www.googleapis.com/books/v1/volumes',
+                    {
+                        params: {
+                            q: bookSearchInput.value,
+                            maxResults: 15
+                        }
+                    }
+                )
+                .then(function (response) {
+                    if(response.data && response.data.items && response.data.items.length){
+                        bookSearchResult.innerHTML = "";
+                        response.data.items.forEach(function (book, index) {
+                            let bookElement = document.createElement("p");
+                            bookElement.innerText = index+1 +". " + book.volumeInfo.title;
+                            bookSearchResult.append(bookElement);
+                        });
+                    }
+                    else{
+                        bookSearchResult.innerText = 'No results upon request';
+                    }
+                    return response
+                })
+                .catch(function (error){
+                    console.log('error', error);
+                    bookSearchResult.innerText = 'error, check console for more details';
+                    return error;
+                });
+            }
+        };
+
+        const debounce = function debounce (func, wait, immediate){
+            let timeout;
+            return function (){
+                let context = this, args = arguments;
+                let later = function (){
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                let callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            }
+        };
+
+        bookSearchInput.onkeyup = debounce(inputCheck, 3000);
+
+    </script>
+</body>
+</html>

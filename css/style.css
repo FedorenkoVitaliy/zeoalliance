@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+body {
+  margin: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  padding: 40px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+}
+
+body * {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  box-sizing: border-box;
+}
+
+body *:focus {
+  outline: none;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  width: 200px;
+  color: #a5acb7;
+  font-size: 18px;
+  border-radius: 5px;
+  background: #ffffff;
+  border: 1px solid #d7deea;
+  cursor: pointer;
+}
+
+.overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  max-width: 0;
+  max-height: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.overlay.active {
+  max-width: 100%;
+  max-height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.overlay.active .popup {
+  opacity: 1;
+  transform: scale(1) skew(0deg);
+}
+
+.popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  max-width: 565px;
+  max-height: 380px;
+  padding: 40px 55px;
+  border-radius: 5px;
+  position: fixed;
+  background: #ffffff;
+  cursor: auto;
+  opacity: 0;
+  transform: scale(0) skew(50deg);
+  transition: transform ease-out .35s, opacity ease-out .4s;
+}
+
+.popup .popup__close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  border-radius: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.popup .popup__img {
+  height: 90px;
+  width: 100px;
+}
+
+.popup .popup__title {
+  font-size: 30px;
+  color: #464b56;
+  text-align: center;
+}
+
+.popup .popup__buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.popup .popup__buttons .popup__cancel, .popup .popup__buttons .popup__confirm {
+  width: calc((100% - 20px)/2);
+}
+
+.popup .popup__buttons .popup__confirm {
+  color: #fffefe;
+  border: 1px solid #ff3b30;
+  background: #ff3b30;
+}
